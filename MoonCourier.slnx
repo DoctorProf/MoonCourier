@@ -3,5 +3,5 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
-  <Project Path="MoonCourier/MoonCourier.vcxproj" />
+  <Project Path="MoonCourier/MoonCourier.vcxproj" Id="6ddcd57c-e33c-42b3-b897-1dae1f28593b" />
 </Solution>

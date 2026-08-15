@@ -145,12 +145,17 @@
     <ClInclude Include="include\Cell.h" />
     <ClInclude Include="include\objects\Order.h" />
     <ClInclude Include="include\objects\Rover.h" />
+    <ClInclude Include="include\PathFinder.h" />
+    <ClInclude Include="include\RandomGenerator.h" />
     <ClInclude Include="include\Simulation.h" />
     <ClInclude Include="include\Utils.h" />
     <ClCompile Include="src\Cell.cpp" />
     <ClCompile Include="src\objects\Order.cpp" />
     <ClCompile Include="src\objects\Rover.cpp" />
     <ClCompile Include="src\Simulation.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="data\1.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

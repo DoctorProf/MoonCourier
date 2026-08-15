@@ -25,9 +25,13 @@ int Rover::getId() const
 {
 	return id;
 }
-std::pair<int, int> Rover::getPosition() const
+int Rover::getX() const
 {
-	return { x, y };
+	return x;
+}
+int Rover::getY() const
+{
+	return y;
 }
 bool Rover::getActive() const
 {

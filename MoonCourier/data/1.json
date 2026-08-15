@@ -1,0 +1,38 @@
+{
+  "height": 720,
+  "width": 1280,
+  "height_grid": 36,
+  "width_grid": 64,
+  "size_cell": 20,
+  "base": {
+    "position": {
+      "x": 10,
+      "y": 10
+    }
+  },
+  "money": 1000,
+  "orders": [
+    {
+      "id": 1,
+      "position": {
+        "x": 10,
+        "y": 10
+      },
+      "reward": 100,
+      "weight": 50,
+      "urgency": 3
+    }
+  ],
+  "rovers": [
+    {
+      "id": 1,
+      "position": {
+        "x": 10,
+        "y": 10
+      },
+      "load_capacity": 100,
+      "battery_life": 100,
+      "active": false
+    }
+  ]
+}

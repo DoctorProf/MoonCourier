@@ -9,7 +9,8 @@ public:
 	void setActive(bool active);
 	void setBatteryLevel(float level);
 	void setLoadCapacity(float capacity);
-	std::pair<int, int> getPosition() const;
+	int getX() const;
+	int getY() const;
 	bool getActive() const;
 	float getBatteryLevel() const;
 	float getLoadCapacity() const;
