@@ -21,7 +21,7 @@ public:
     int getY() const;
 
     CellType getType() const;
-    void setType(CellType newType);
+    void setType(CellType new_type);
 
     bool isPassable() const;
 

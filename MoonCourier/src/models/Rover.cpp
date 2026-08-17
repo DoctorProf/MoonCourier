@@ -1,7 +1,7 @@
-#include "../../include/objects/Rover.h"
+#include "../../include/models/Rover.h"
 
 Rover::Rover(int x, int y, int id, bool isActive, float batteryLevel, float load_capacity)
-	: x(x), y(y), id(id), isActive(isActive), batteryLevel(batteryLevel), load_capacity(load_capacity) 
+	: x(x), y(y), id(id), isActive(isActive), batteryLevel(batteryLevel), load(load_capacity) 
 {
 }
 void Rover::setPosition(int newX, int newY)
@@ -17,9 +17,9 @@ void Rover::setBatteryLevel(float level)
 {
 	batteryLevel = level;
 }
-void Rover::setLoadCapacity(float capacity)
+void Rover::setLoad(float capacity)
 {
-	load_capacity = capacity;
+	load = capacity;
 }
 int Rover::getId() const
 {
@@ -41,7 +41,7 @@ float Rover::getBatteryLevel() const
 {
 	return batteryLevel;
 }
-float Rover::getLoadCapacity() const
+float Rover::getLoad() const
 {
-	return load_capacity;
+	return load;
 }

@@ -1,4 +1,4 @@
-#include "../../include/objects/Order.h"
+#include "../../include/models/Order.h"
 
 Order::Order(
     int id,

@@ -1,8 +1,9 @@
 #pragma once
 #include <iostream>
 #include <vector>
-#include "../include/objects/Order.h"
-#include "../include/objects/Rover.h"
+#include "../include/models/Order.h"
+#include "../include/models/Base.h"
+#include "../include/Map.h"
 #include <nlohmann/json.hpp>
 
 using json = nlohmann::json;
@@ -11,32 +12,23 @@ class Simulation
 {
 public:
 	Simulation(json config);
-	Simulation(int base_x, int base_y, int width_grid, int height_grid, int size_cell, int money);
+	Simulation(int widthGrid, int heightGrid);
+
 	void run();
 	void update();
+
 	void load(json config);
 	void save();
-	int getBaseX() const;
-	int getBaseY() const;
-	int getWidthGrid() const;
-	int getHeightGrid() const;
-	int getSizeCell() const;
-	int getMoney() const;
+
+	Base& getBase();
+	Map& getMap();
 
 	std::vector<Order>& getOrders();
-	std::vector<Rover>& getRovers();
-
 	void addOrder(const Order& order);
-	void addRover(const Rover& rover);
+	void removeOrder(int orderId);
 
 private:
-	int base_x;
-	int base_y;
-	int width_grid;
-	int height_grid;
-	int size_cell;
-	int money;
+	Base base;
+	Map map;
 	std::vector<Order> orders;
-	std::vector<Rover> rovers;
-	
 };

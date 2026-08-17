@@ -142,16 +142,24 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\BasePanelGui.h" />
     <ClInclude Include="include\Cell.h" />
-    <ClInclude Include="include\objects\Order.h" />
-    <ClInclude Include="include\objects\Rover.h" />
+    <ClInclude Include="include\Map.h" />
+    <ClInclude Include="include\models\Base.h" />
+    <ClInclude Include="include\models\Order.h" />
+    <ClInclude Include="include\models\Rover.h" />
     <ClInclude Include="include\PathFinder.h" />
     <ClInclude Include="include\RandomGenerator.h" />
+    <ClInclude Include="include\Renderer.h" />
     <ClInclude Include="include\Simulation.h" />
     <ClInclude Include="include\Utils.h" />
+    <ClCompile Include="src\BasePanelGui.cpp" />
     <ClCompile Include="src\Cell.cpp" />
-    <ClCompile Include="src\objects\Order.cpp" />
-    <ClCompile Include="src\objects\Rover.cpp" />
+    <ClCompile Include="src\Map.cpp" />
+    <ClCompile Include="src\models\Base.cpp" />
+    <ClCompile Include="src\models\Order.cpp" />
+    <ClCompile Include="src\models\Rover.cpp" />
+    <ClCompile Include="src\Renderer.cpp" />
     <ClCompile Include="src\Simulation.cpp" />
   </ItemGroup>
   <ItemGroup>

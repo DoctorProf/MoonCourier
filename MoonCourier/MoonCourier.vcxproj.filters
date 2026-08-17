@@ -24,11 +24,23 @@
     <ClCompile Include="src\Cell.cpp">
       <Filter>Файлы заголовков</Filter>
     </ClCompile>
-    <ClCompile Include="src\objects\Rover.cpp">
+    <ClCompile Include="src\models\Rover.cpp">
       <Filter>Файлы заголовков</Filter>
     </ClCompile>
-    <ClCompile Include="src\objects\Order.cpp">
+    <ClCompile Include="src\models\Order.cpp">
       <Filter>Файлы заголовков</Filter>
+    </ClCompile>
+    <ClCompile Include="src\models\Base.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Renderer.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Map.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BasePanelGui.cpp">
+      <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -38,10 +50,10 @@
     <ClInclude Include="include\Cell.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="include\objects\Rover.h">
+    <ClInclude Include="include\models\Rover.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="include\objects\Order.h">
+    <ClInclude Include="include\models\Order.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="include\Simulation.h">
@@ -51,6 +63,18 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="include\PathFinder.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Renderer.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="include\models\Base.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Map.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="include\BasePanelGui.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
