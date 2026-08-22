@@ -1,5 +1,4 @@
 #pragma once
-
 #include <algorithm>
 #include <functional>
 #include <limits>
@@ -13,7 +12,7 @@ namespace pathfinder
     struct PathResult
     {
         std::vector<int> cells;
-        float totalCost = 0.0f;
+        float total_cost = 0.0f;
         bool found = false;
     };
 
@@ -32,10 +31,10 @@ namespace pathfinder
         const std::vector<Cell>& map,
         int width,
         int height,
-        int startX,
-        int startY,
-        int targetX,
-        int targetY
+        int start_x,
+        int start_y,
+        int target_x,
+        int target_y
     )
     {
         PathResult result;
@@ -46,28 +45,29 @@ namespace pathfinder
         if (map.size() != static_cast<size_t>(width * height))
             return result;
 
-        auto isInBounds = [width, height](int x, int y)
+        auto is_in_bounds = [width, height](int x, int y)
             {
                 return x >= 0 && x < width &&
                     y >= 0 && y < height;
             };
 
-        if (!isInBounds(startX, startY) ||
-            !isInBounds(targetX, targetY))
+        if (!is_in_bounds(start_x, start_y) ||
+            !is_in_bounds(target_x, target_y))
         {
             return result;
         }
 
-        int startIndex = startY * width + startX;
-        int targetIndex = targetY * width + targetX;
+        int start_index = start_y * width + start_x;
+        int target_index = target_y * width + target_x;
 
-        if (!map[startIndex].isPassable() ||
-            !map[targetIndex].isPassable())
+        if (!map[start_index].isPassable() ||
+            !map[target_index].isPassable())
         {
             return result;
         }
 
-        const float infinity = std::numeric_limits<float>::infinity();
+        const float infinity =
+            std::numeric_limits<float>::infinity();
 
         std::vector<float> costs(map.size(), infinity);
         std::vector<int> previous(map.size(), -1);
@@ -76,10 +76,10 @@ namespace pathfinder
             QueueNode,
             std::vector<QueueNode>,
             std::greater<QueueNode>
-        > openCells;
+        > open_cells;
 
-        costs[startIndex] = 0.0f;
-        openCells.push({ startIndex, 0.0f });
+        costs[start_index] = 0.0f;
+        open_cells.push({ start_index, 0.0f });
 
         const int directions[4][2] =
         {
@@ -89,74 +89,87 @@ namespace pathfinder
             { -1, 0 }
         };
 
-        while (!openCells.empty())
+        while (!open_cells.empty())
         {
-            QueueNode current = openCells.top();
-            openCells.pop();
+            QueueNode current = open_cells.top();
+            open_cells.pop();
 
             if (current.cost > costs[current.index])
                 continue;
 
-            if (current.index == targetIndex)
+            if (current.index == target_index)
                 break;
 
-            int currentX = current.index % width;
-            int currentY = current.index / width;
+            int current_x = current.index % width;
+            int current_y = current.index / width;
 
             for (const auto& direction : directions)
             {
-                int neighborX = currentX + direction[0];
-                int neighborY = currentY + direction[1];
+                int neighbor_x = current_x + direction[0];
+                int neighbor_y = current_y + direction[1];
 
-                if (!isInBounds(neighborX, neighborY))
+                if (!is_in_bounds(neighbor_x, neighbor_y))
                     continue;
 
-                int neighborIndex = neighborY * width + neighborX;
-                const Cell& neighbor = map[neighborIndex];
+                int neighbor_index =
+                    neighbor_y * width + neighbor_x;
 
-                // Impassable сюда никогда не попадёт.
+                const Cell& neighbor =
+                    map[neighbor_index];
+
                 if (!neighbor.isPassable())
                     continue;
 
-                float newCost =
+                float new_cost =
                     costs[current.index] +
-                    getCellTraversalCost(neighbor.getType());
+                    getCellTraversalCost(
+                        neighbor.getType()
+                    );
 
-                if (newCost >= costs[neighborIndex])
+                if (new_cost >= costs[neighbor_index])
                     continue;
 
-                costs[neighborIndex] = newCost;
-                previous[neighborIndex] = current.index;
+                costs[neighbor_index] = new_cost;
+                previous[neighbor_index] = current.index;
 
-                openCells.push({ neighborIndex, newCost });
+                open_cells.push(
+                    { neighbor_index, new_cost }
+                );
             }
         }
 
-        if (costs[targetIndex] == infinity)
+        if (costs[target_index] == infinity)
             return result;
 
-        for (int index = targetIndex; index != -1; index = previous[index])
+        for (int index = target_index;
+            index != -1;
+            index = previous[index])
         {
             result.cells.push_back(index);
 
-            if (index == startIndex)
+            if (index == start_index)
                 break;
         }
 
-        std::reverse(result.cells.begin(), result.cells.end());
+        std::reverse(
+            result.cells.begin(),
+            result.cells.end()
+        );
 
-        result.totalCost = costs[targetIndex];
+        result.total_cost = costs[target_index];
         result.found = true;
 
         return result;
     }
 
-    inline float getAverageDifficulty(const PathResult& path)
+    inline float getAverageDifficulty(
+        const PathResult& path
+    )
     {
         if (!path.found || path.cells.size() < 2)
             return 0.0f;
 
-        return path.totalCost /
+        return path.total_cost /
             static_cast<float>(path.cells.size() - 1);
     }
 }

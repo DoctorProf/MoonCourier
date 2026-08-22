@@ -11,20 +11,29 @@ class Renderer
 {
 public:
 	Renderer(RenderWindow& window,int height, int width, float size_cell);
-	void drawPathLines(
-		const pathfinder::PathResult& path,
-		int widthGrid
-	);
-	void updateWindow(Simulation& simulation, const pathfinder::PathResult& activePath);
+	
+	void updateWindow(Simulation& simulation);
 	
 private:
 	RenderWindow& window;
 	int height;
 	int width;
 	float size_cell;
+
+	void drawPathCells(
+		const pathfinder::PathResult& path,
+		const std::vector<Cell>& map,
+		int widthGrid
+	);
 	void drawMap(const std::vector<Cell>& map);
 	void drawBase(const Base& base);
 	void drawOrders(const std::vector<Order>& orders);
 	void drawRovers(const std::vector<Rover>& rovers);
+	void drawMoney(float money);
+	void drawDeliveries(
+		Simulation& simulation,
+		int widthGrid
+	);
 	Color getCellColor(CellType type);	
+	Color getPathColor(CellType type);
 };

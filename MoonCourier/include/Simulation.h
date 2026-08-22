@@ -5,6 +5,7 @@
 #include "../include/models/Base.h"
 #include "../include/Map.h"
 #include <nlohmann/json.hpp>
+#include "Delivery.h"
 
 using json = nlohmann::json;
 
@@ -12,10 +13,9 @@ class Simulation
 {
 public:
 	Simulation(json config);
-	Simulation(int widthGrid, int heightGrid);
+	Simulation(int width_grid, int height_grid);
 
-	void run();
-	void update();
+	void update(float delta_time);
 
 	void load(json config);
 	void save();
@@ -25,10 +25,21 @@ public:
 
 	std::vector<Order>& getOrders();
 	void addOrder(const Order& order);
-	void removeOrder(int orderId);
+	void removeOrder(int order_id);
+
+	void createDelivery(
+		Rover& rover,
+		Order& order,
+		const pathfinder::PathResult& path
+	);
+
+	std::vector<Delivery>& getDeliveries();
+
+	void updateDeliveries();
 
 private:
 	Base base;
 	Map map;
 	std::vector<Order> orders;
+	std::vector<Delivery> deliveries;
 };

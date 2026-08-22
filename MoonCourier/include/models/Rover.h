@@ -1,27 +1,77 @@
 #pragma once
-#include <utility>
+
+#include <vector>
+#include <cstddef>
+
+#include "../Cell.h"
+
+enum class PathDirection
+{
+    Forward,
+    Backward
+};
 
 class Rover
 {
 public:
-	Rover(int x, int y, int id, bool isActive, float batteryLevel, float load);
-	void setPosition(int newX, int newY);
-	void setActive(bool active);
-	void setBatteryLevel(float level);
-	void setLoad(float load);
-	int getX() const;
-	int getY() const;
-	bool getActive() const;
-	float getBatteryLevel() const;
-	float getLoad() const;
-	int getId() const;
+    Rover(
+        int x,
+        int y,
+        int id,
+        bool is_active,
+        float battery_level,
+        float load
+    );
+
+    void setPosition(int new_x, int new_y);
+    void setActive(bool active);
+    void setBatteryLevel(float level);
+    void setLoad(float load);
+
+    int getX() const;
+    int getY() const;
+    bool getActive() const;
+    float getBatteryLevel() const;
+    float getLoad() const;
+    void setLoadMultiplier(float multiplier);
+    int getId() const;
+
+    void setPath(const std::vector<int>& new_path);
+
+    void setPathDirection(PathDirection direction);
+
+    void updateMovement(
+        float delta_time,
+        const std::vector<Cell>& map,
+        int width
+    );
+
+    void setMoving(bool state);
+    bool isMoving() const;
+
+    const std::vector<int>& getPath() const;
+    size_t getCurrentPathIndex() const;
 
 private:
-	int x;
-	int y;
-	int id;
-	bool isActive;
-	float batteryLevel;
-	float load;
-	float speed;
+    int x;
+    int y;
+    int id;
+
+    bool is_active;
+
+    float battery_level;
+    float load;
+    float load_multiplier = 1.0f;
+
+    bool moving = false;
+
+    std::vector<int> path;
+
+    size_t current_path_index = 0;
+
+    float cell_timer = 0.0f;
+
+    PathDirection path_direction =
+        PathDirection::Forward;
+
 };

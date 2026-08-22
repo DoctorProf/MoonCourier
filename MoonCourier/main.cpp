@@ -5,67 +5,66 @@
 #include "include/Simulation.h"
 #include "include/PathFinder.h"
 #include "include/Renderer.h"
-#include "include/BasePanelGui.h"
 
 #include <cstddef>
 
-bool isClickedTarget(int pos_x, int pos_y, int target_x, int target_y)
+bool isClickedTarget(
+    int pos_x,
+    int pos_y,
+    int target_x,
+    int target_y
+)
 {
     return pos_x == target_x && pos_y == target_y;
 }
+
 int main()
 {
     float height = utils::writeData("height", 720.0f);
     float width = utils::writeData("width", 1280.0f);
     float size_cell = utils::writeData("size_cell", 20.0f);
 
-    int height_grid = static_cast<int>(height / size_cell);
-    int width_grid = static_cast<int>(width / size_cell);
+    int height_grid =
+        static_cast<int>(height / size_cell);
 
-    Simulation simulation(width_grid, height_grid);
+    int width_grid =
+        static_cast<int>(width / size_cell);
 
-    pathfinder::PathResult activePath;
-
-    std::size_t roverPathStep = 0;
-    bool roverMoving = false;
-
-    float roverMoveAccumulator = 0.0f;
-    constexpr float secondsPerCell = 0.15f;
+    Simulation simulation(
+        width_grid,
+        height_grid
+    );
 
     constexpr int tick = 60;
-    constexpr float tickRate = 1.0f / tick;
+    constexpr float tick_rate = 1.0f / tick;
 
     sf::Clock clock;
     float accumulator = 0.0f;
 
     sf::RenderWindow window(
-        sf::VideoMode(
-            {
-                static_cast<unsigned int>(width),
-                static_cast<unsigned int>(height)
-            }
-        ),
+        sf::VideoMode({
+            static_cast<unsigned int>(width),
+            static_cast<unsigned int>(height)
+            }),
         "MoonCourier"
     );
 
     window.setVerticalSyncEnabled(true);
 
-    Renderer renderer(window, height, width, size_cell);
+    Renderer renderer(
+        window,
+        height,
+        width,
+        size_cell
+    );
 
     tgui::Gui gui(window);
-
-    BasePanelGui basePanel(
-        gui,
-        simulation.getBase(),
-        width,
-        height
-    );
 
     while (window.isOpen())
     {
         while (const auto event = window.pollEvent())
         {
-            gui.handleEvent(*event);
+            bool gui_consumed = gui.handleEvent(*event);
 
             if (event->is<sf::Event::Closed>())
             {
@@ -73,52 +72,80 @@ int main()
                 continue;
             }
 
+            if (gui_consumed)
+                continue;
+
             const auto* mouse_event =
                 event->getIf<sf::Event::MouseButtonPressed>();
 
-            if (!mouse_event ||
-                mouse_event->button != sf::Mouse::Button::Left)
-            {
+            if (!mouse_event)
                 continue;
-            }
 
-            float mouse_x = static_cast<float>(mouse_event->position.x);
-            float mouse_y = static_cast<float>(mouse_event->position.y);
+            if (mouse_event->button != sf::Mouse::Button::Left)
+                continue;
+
+            const int mouse_x =
+                static_cast<int>(
+                    mouse_event->position.x / size_cell
+                    );
+
+            const int mouse_y =
+                static_cast<int>(
+                    mouse_event->position.y / size_cell
+                    );
 
             Base& base = simulation.getBase();
 
-            if (isClickedTarget((int)mouse_x / size_cell, (int)mouse_y / size_cell, base.getX(), base.getY()))
+            // Не позволяем нажимать на базу
+            if (isClickedTarget(
+                mouse_x,
+                mouse_y,
+                base.getX(),
+                base.getY()))
             {
-                basePanel.toggle();
                 continue;
             }
 
-            Rover* selectedRover = base.getSelectedRover();
-
-            if (!selectedRover)
-                continue;
-
-            for (const Order& order : simulation.getOrders())
+            for (Order& order : simulation.getOrders())
             {
-                if (!isClickedTarget((int)mouse_x / size_cell, (int)mouse_y / size_cell, order.getX(), order.getY()))
+                if (!isClickedTarget(
+                    mouse_x,
+                    mouse_y,
+                    order.getX(),
+                    order.getY()))
+                {
                     continue;
+                }
 
-                activePath = pathfinder::findPath(
+                // Пока у нас один тестовый ровер
+                Rover& rover = base.getRovers()[0];
+
+                if (!rover.getActive())
+                    break;
+
+                if (rover.isMoving())
+                    break;
+
+                auto path = pathfinder::findPath(
                     simulation.getMap().getCells(),
                     width_grid,
                     height_grid,
-                    selectedRover->getX(),
-                    selectedRover->getY(),
+
+                    rover.getX(),
+                    rover.getY(),
+
                     order.getX(),
                     order.getY()
                 );
 
-                roverPathStep = 1;
-                roverMoveAccumulator = 0.0f;
+                if (!path.found)
+                    break;
 
-                roverMoving =
-                    activePath.found &&
-                    activePath.cells.size() > 1;
+                simulation.createDelivery(
+                    rover,
+                    order,
+                    path
+                );
 
                 break;
             }
@@ -126,47 +153,16 @@ int main()
 
         accumulator += clock.restart().asSeconds();
 
-        while (accumulator >= tickRate)
+        while (accumulator >= tick_rate)
         {
-            accumulator -= tickRate;
+            accumulator -= tick_rate;
 
-            if (!roverMoving)
-                continue;
-
-            Rover* selectedRover =
-                simulation.getBase().getSelectedRover();
-
-            if (!selectedRover)
-            {
-                roverMoving = false;
-                continue;
-            }
-
-            roverMoveAccumulator += tickRate;
-
-            if (roverMoveAccumulator < secondsPerCell)
-                continue;
-
-            roverMoveAccumulator -= secondsPerCell;
-
-            int cellIndex = activePath.cells[roverPathStep];
-
-            auto [x, y] = utils::getCoordToIndex(
-                cellIndex,
-                width_grid
-            );
-
-            selectedRover->setPosition(x, y);
-
-            ++roverPathStep;
-
-            if (roverPathStep >= activePath.cells.size())
-                roverMoving = false;
+            simulation.update(tick_rate);
         }
 
-        window.clear(sf::Color(30, 30, 30));
+        window.clear(sf::Color(0, 0, 0));
 
-        renderer.updateWindow(simulation, activePath);
+        renderer.updateWindow(simulation );
 
         gui.draw();
 

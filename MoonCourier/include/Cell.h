@@ -11,6 +11,8 @@ enum class CellType
 };
 
 float getCellTraversalCost(CellType type);
+float getCellTraversalTime(CellType type);
+float getCellBatteryCost(CellType type);
 
 class Cell
 {

@@ -2,18 +2,19 @@
 
 Order::Order(
     int id,
-    int targetX,
-    int targetY,
+    int target_x,
+    int target_y,
     float weight,
     float reward,
     OrderUrgency urgency
 )
     : id(id),
-    x(targetX),
-    y(targetY),
+    x(target_x),
+    y(target_y),
     weight(weight),
     reward(reward),
-    urgency(urgency)
+    urgency(urgency),
+    status(OrderStatus::Pending)
 {
 }
 
@@ -45,4 +46,14 @@ float Order::getReward() const
 OrderUrgency Order::getUrgency() const
 {
     return urgency;
+}
+
+OrderStatus Order::getStatus() const
+{
+    return status;
+}
+
+void Order::setStatus(OrderStatus new_status)
+{
+    status = new_status;
 }

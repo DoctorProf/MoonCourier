@@ -39,9 +39,6 @@
     <ClCompile Include="src\Map.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\BasePanelGui.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Utils.h">
@@ -74,11 +71,15 @@
     <ClInclude Include="include\Map.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="include\BasePanelGui.h">
+    <ClInclude Include="include\Delivery.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="data\1.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="..\..\..\..\Users\dimao\Downloads\Pixel Operator\PixelOperator.ttf" />
+    <Font Include="assets\fonts\PixelOperator.ttf" />
   </ItemGroup>
 </Project>

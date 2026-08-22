@@ -142,8 +142,8 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\BasePanelGui.h" />
     <ClInclude Include="include\Cell.h" />
+    <ClInclude Include="include\Delivery.h" />
     <ClInclude Include="include\Map.h" />
     <ClInclude Include="include\models\Base.h" />
     <ClInclude Include="include\models\Order.h" />
@@ -153,7 +153,6 @@
     <ClInclude Include="include\Renderer.h" />
     <ClInclude Include="include\Simulation.h" />
     <ClInclude Include="include\Utils.h" />
-    <ClCompile Include="src\BasePanelGui.cpp" />
     <ClCompile Include="src\Cell.cpp" />
     <ClCompile Include="src\Map.cpp" />
     <ClCompile Include="src\models\Base.cpp" />
@@ -164,6 +163,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="data\1.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="..\..\..\..\Users\dimao\Downloads\Pixel Operator\PixelOperator.ttf" />
+    <Font Include="assets\fonts\PixelOperator.ttf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

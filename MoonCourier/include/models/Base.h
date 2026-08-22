@@ -12,23 +12,18 @@ public:
 	int getY() const;
 	std::vector<Rover>& getRovers();
 	const std::vector<Rover>& getRovers() const;
+	Rover& getRover(int rover_id);
 	void addRover(const Rover& rover);
-	void removeRover(int roverId);
+	void removeRover(int rover_id);
+	void chargeRover(int rover_id);
 
 	float getMoney() const;
 	void setMoney(float newMoney);
 
-	bool selectRover(int roverId);
-
-	Rover* getSelectedRover();
-	const Rover* getSelectedRover() const;
-
-	bool chargeSelectedRover(float price);
 
 private:
 	int x;
 	int y;
 	std::vector<Rover> rovers;
 	float money;
-	int selected_rover_id = -1;
 };

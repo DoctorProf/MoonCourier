@@ -1,5 +1,12 @@
 #pragma once
 
+enum class OrderStatus
+{
+    Pending,
+    InProgress,
+    Delivered
+};
+
 enum class OrderUrgency
 {
     Low,
@@ -13,8 +20,8 @@ class Order
 public:
     Order(
         int id,
-        int targetX,
-        int targetY,
+        int target_x,
+        int target_y,
         float weight,
         float reward,
         OrderUrgency urgency
@@ -28,6 +35,9 @@ public:
     float getReward() const;
     OrderUrgency getUrgency() const;
 
+    OrderStatus getStatus() const;
+    void setStatus(OrderStatus newStatus);
+
 private:
     int id;
 
@@ -38,4 +48,5 @@ private:
     float reward;
 
     OrderUrgency urgency;
+    OrderStatus status;
 };

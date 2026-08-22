@@ -30,57 +30,36 @@ Color Renderer::getCellColor(CellType type)
     return sf::Color(105, 100, 92);
 }
 
-void Renderer::drawPathLines(
-	const pathfinder::PathResult& path,
-	int widthGrid
+void Renderer::drawPathCells(
+    const pathfinder::PathResult& path,
+    const std::vector<Cell>& map,
+    int widthGrid
 )
 {
     if (!path.found)
         return;
 
-    constexpr float lineThickness = 3.0f;
-
-    for (size_t i = 1; i < path.cells.size(); ++i)
+    for (int cell_index : path.cells)
     {
-        auto [fromX, fromY] =
-            utils::getCoordToIndex(path.cells[i - 1], widthGrid);
+        auto [x, y] =
+            utils::getCoordToIndex(cell_index, widthGrid);
 
-        auto [toX, toY] =
-            utils::getCoordToIndex(path.cells[i], widthGrid);
+        sf::RectangleShape cell;
+        cell.setSize({
+            size_cell - 2.0f,
+            size_cell - 2.0f
+            });
 
-        sf::RectangleShape line;
-        line.setFillColor(sf::Color::White);
+        cell.setPosition({
+            x * size_cell + 1.0f,
+            y * size_cell + 1.0f
+            });
 
-        if (fromX != toX)
-        {
-            int leftX = std::min(fromX, toX);
+        cell.setFillColor(
+            getPathColor(map[cell_index].getType())
+        );
 
-            line.setSize({ size_cell, lineThickness });
-            line.setOrigin({ 0.0f, lineThickness / 2.0f });
-
-            line.setPosition(
-                {
-                    leftX * size_cell + size_cell / 2.0f,
-                    fromY * size_cell + size_cell / 2.0f
-                }
-            );
-        }
-        else
-        {
-            int topY = std::min(fromY, toY);
-
-            line.setSize({ lineThickness, size_cell });
-            line.setOrigin({ lineThickness / 2.0f, 0.0f });
-
-            line.setPosition(
-                {
-                    fromX * size_cell + size_cell / 2.0f,
-                    topY * size_cell + size_cell  / 2.0f
-                }
-            );
-        }
-
-        window.draw(line);
+        window.draw(cell);
     }
 }
 void Renderer::drawMap(const std::vector<Cell>& map)
@@ -153,14 +132,72 @@ void Renderer::drawRovers(const std::vector<Rover>& rovers)
         window.draw(rover_shape);
     }
 }
+void Renderer::drawMoney(float money) {
+
+    sf::Font font;
+    if (!font.openFromFile("assets/fonts/PixelOperator-Bold.ttf"))
+    {
+		std::cout << "Fonts not loaded!" << std::endl;
+        return;
+    }
+
+    sf::Text money_text(font);
+    money_text.setString("MONEY: $" + std::to_string(static_cast<int>(money)));
+    money_text.setCharacterSize(24);
+    money_text.setFillColor(sf::Color::Green);
+    money_text.setPosition({ 10.0f, 10.0f });
+
+    window.draw(money_text);
+}
 
 
-void Renderer::updateWindow(Simulation& simulation, const pathfinder::PathResult& activePath)
+void Renderer::updateWindow(Simulation& simulation)
 {
     drawMap(simulation.getMap().getCells());
-	drawPathLines(activePath, simulation.getMap().getWidthGrid());
+	drawDeliveries(simulation, simulation.getMap().getWidthGrid());
+    drawRovers(simulation.getBase().getRovers());
 	drawBase(simulation.getBase());
 	drawOrders(simulation.getOrders());
-    drawRovers(simulation.getBase().getRovers());
+	drawMoney(simulation.getBase().getMoney());
+}
+void Renderer::drawDeliveries(
+    Simulation& simulation,
+    int widthGrid
+)
+{
+    const auto& deliveries = simulation.getDeliveries();
+    const auto& map = simulation.getMap().getCells();
 
+    for (const auto& delivery : deliveries)
+    {
+        drawPathCells(
+            delivery.path,
+            map,
+            widthGrid
+        );
+    }
+}
+
+Color Renderer::getPathColor(CellType type)
+{
+    switch (type)
+    {
+    case CellType::CompactGround:
+        return sf::Color(50, 220, 80);
+
+    case CellType::Regolith:
+        return sf::Color(140, 220, 60);
+
+    case CellType::LooseDust:
+        return sf::Color(230, 220, 50);
+
+    case CellType::RockyGround:
+        return sf::Color(255, 140, 40);
+
+    case CellType::Crater:
+        return sf::Color(230, 50, 50);
+
+    default:
+        return sf::Color::White;
+    }
 }
