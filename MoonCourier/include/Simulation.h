@@ -36,10 +36,18 @@ public:
 	std::vector<Delivery>& getDeliveries();
 
 	void updateDeliveries();
+	bool chargeRover(int rover_id);
+	bool isGameOver() const;
+
+	bool buyRover();
 
 private:
 	Base base;
 	Map map;
 	std::vector<Order> orders;
 	std::vector<Delivery> deliveries;
+
+	bool game_over = false;
+
+	void generateOrder();
 };

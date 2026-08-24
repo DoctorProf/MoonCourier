@@ -1,17 +1,13 @@
 #include "../../include/models/Rover.h"
 
-Rover::Rover(int x, int y, int id, bool isActive, float batteryLevel, float load_capacity)
-	: x(x), y(y), id(id), is_active(isActive), battery_level(batteryLevel), load(load_capacity) 
+Rover::Rover(int x, int y, int id, bool isMoving, float batteryLevel, float load_capacity)
+	: x(x), y(y), id(id), moving(isMoving), battery_level(batteryLevel), load(load_capacity) 
 {
 }
 void Rover::setPosition(int newX, int newY)
 {
 	x = newX;
 	y = newY;
-}
-void Rover::setActive(bool active)
-{
-	is_active = active;
 }
 void Rover::setBatteryLevel(float level)
 {
@@ -33,10 +29,6 @@ int Rover::getY() const
 {
 	return y;
 }
-bool Rover::getActive() const
-{
-	return is_active;
-}
 float Rover::getBatteryLevel() const
 {
 	return battery_level;
@@ -52,17 +44,18 @@ void Rover::setLoadMultiplier(float multiplier)
 
 void Rover::setPath(const std::vector<int>& new_path)
 {
-	path = new_path;
-	current_path_index = 0;
-	cell_timer = 0.0f;
+    path = new_path;
 
-	if (path.empty())
-	{
-		moving = false;
-		return;
-	}
+    current_path_index = 0;
+    cell_timer = 0.0f;
 
-	moving = true;
+    if (path.empty())
+    {
+        moving = false;
+        return;
+    }
+
+    moving = true;
 }
 
 void Rover::updateMovement(
@@ -133,8 +126,13 @@ void Rover::updateMovement(
         getCellBatteryCost(next_type)
         * load_multiplier;
 
-    if (battery_level < 0.0f)
+    if (battery_level <= 0.0f)
+    {
         battery_level = 0.0f;
+        dead = true;
+        moving = false;
+        return;
+    }
 
     if (path_direction == PathDirection::Forward)
     {
@@ -175,4 +173,9 @@ size_t Rover::getCurrentPathIndex() const
 void Rover::setPathDirection(PathDirection direction)
 {
     path_direction = direction;
+}
+
+bool Rover::isDead() const
+{
+    return dead;
 }

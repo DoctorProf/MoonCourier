@@ -1,12 +1,9 @@
 ﻿#include <SFML/Graphics.hpp>
-#include <TGUI/Backend/SFML-Graphics.hpp>
 
 #include "include/Utils.h"
 #include "include/Simulation.h"
 #include "include/PathFinder.h"
 #include "include/Renderer.h"
-
-#include <cstddef>
 
 bool isClickedTarget(
     int pos_x,
@@ -15,14 +12,22 @@ bool isClickedTarget(
     int target_y
 )
 {
-    return pos_x == target_x && pos_y == target_y;
+    return pos_x == target_x &&
+        pos_y == target_y;
 }
 
 int main()
 {
-    float height = utils::writeData("height", 720.0f);
-    float width = utils::writeData("width", 1280.0f);
-    float size_cell = utils::writeData("size_cell", 20.0f);
+    float height =
+        utils::writeData("height", 720.0f);
+
+    float width =
+        utils::writeData("width", 1280.0f);
+
+    float size_cell =
+        utils::writeData("size_cell", 20.0f);
+
+    float speed_sim = utils::writeData("speed_sim", 1.0f);
 
     int height_grid =
         static_cast<int>(height / size_cell);
@@ -38,11 +43,11 @@ int main()
     constexpr int tick = 60;
     constexpr float tick_rate = 1.0f / tick;
 
-    sf::Clock clock;
+    Clock clock;
     float accumulator = 0.0f;
 
-    sf::RenderWindow window(
-        sf::VideoMode({
+    RenderWindow window(
+        VideoMode({
             static_cast<unsigned int>(width),
             static_cast<unsigned int>(height)
             }),
@@ -58,31 +63,71 @@ int main()
         size_cell
     );
 
-    tgui::Gui gui(window);
-
     while (window.isOpen())
     {
         while (const auto event = window.pollEvent())
         {
-            bool gui_consumed = gui.handleEvent(*event);
-
-            if (event->is<sf::Event::Closed>())
+            if (event->is<Event::Closed>())
             {
                 window.close();
                 continue;
             }
 
-            if (gui_consumed)
+            const auto* key_event =
+                event->getIf<Event::KeyPressed>();
+
+            if (key_event)
+            {
+                Base& base =
+                    simulation.getBase();
+
+                switch (key_event->code)
+                {
+                case Keyboard::Key::Left:
+                    base.selectPreviousRover();
+                    break;
+
+                case Keyboard::Key::Right:
+                    base.selectNextRover();
+                    break;
+
+                case Keyboard::Key::C:
+                {
+                    Rover* rover =
+                        base.getSelectedRover();
+
+                    if (rover)
+                    {
+                        simulation.chargeRover(
+                            rover->getId()
+                        );
+                    }
+
+                    break;
+                }
+
+                case Keyboard::Key::B:
+                    simulation.buyRover();
+                    break;
+
+                default:
+                    break;
+                }
+
                 continue;
+            }
 
             const auto* mouse_event =
-                event->getIf<sf::Event::MouseButtonPressed>();
+                event->getIf<Event::MouseButtonPressed>();
 
             if (!mouse_event)
                 continue;
 
-            if (mouse_event->button != sf::Mouse::Button::Left)
+            if (mouse_event->button !=
+                Mouse::Button::Left)
+            {
                 continue;
+            }
 
             const int mouse_x =
                 static_cast<int>(
@@ -94,9 +139,9 @@ int main()
                     mouse_event->position.y / size_cell
                     );
 
-            Base& base = simulation.getBase();
+            Base& base =
+                simulation.getBase();
 
-            // Не позволяем нажимать на базу
             if (isClickedTarget(
                 mouse_x,
                 mouse_y,
@@ -106,7 +151,8 @@ int main()
                 continue;
             }
 
-            for (Order& order : simulation.getOrders())
+            for (Order& order :
+                simulation.getOrders())
             {
                 if (!isClickedTarget(
                     mouse_x,
@@ -117,32 +163,31 @@ int main()
                     continue;
                 }
 
-                // Пока у нас один тестовый ровер
-                Rover& rover = base.getRovers()[0];
+                Rover* rover =
+                    base.getSelectedRover();
 
-                if (!rover.getActive())
+                if (!rover)
                     break;
 
-                if (rover.isMoving())
+                if (rover->isMoving())
                     break;
 
-                auto path = pathfinder::findPath(
-                    simulation.getMap().getCells(),
-                    width_grid,
-                    height_grid,
-
-                    rover.getX(),
-                    rover.getY(),
-
-                    order.getX(),
-                    order.getY()
-                );
+                auto path =
+                    pathfinder::findPath(
+                        simulation.getMap().getCells(),
+                        width_grid,
+                        height_grid,
+                        rover->getX(),
+                        rover->getY(),
+                        order.getX(),
+                        order.getY()
+                    );
 
                 if (!path.found)
                     break;
 
                 simulation.createDelivery(
-                    rover,
+                    *rover,
                     order,
                     path
                 );
@@ -151,20 +196,25 @@ int main()
             }
         }
 
-        accumulator += clock.restart().asSeconds();
+        accumulator +=
+            clock.restart().asSeconds();
 
         while (accumulator >= tick_rate)
         {
             accumulator -= tick_rate;
 
-            simulation.update(tick_rate);
+            simulation.update(
+                tick_rate * speed_sim
+            );
         }
 
-        window.clear(sf::Color(0, 0, 0));
+        window.clear(
+            Color::Black
+        );
 
-        renderer.updateWindow(simulation );
-
-        gui.draw();
+        renderer.updateWindow(
+            simulation
+        );
 
         window.display();
     }

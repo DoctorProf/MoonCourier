@@ -15,6 +15,7 @@ public:
 	void updateWindow(Simulation& simulation);
 	
 private:
+	Font font;
 	RenderWindow& window;
 	int height;
 	int width;
@@ -30,10 +31,26 @@ private:
 	void drawOrders(const std::vector<Order>& orders);
 	void drawRovers(const std::vector<Rover>& rovers);
 	void drawMoney(float money);
+	void drawBatteryLevel(const Rover& rover);
 	void drawDeliveries(
 		Simulation& simulation,
 		int widthGrid
 	);
 	Color getCellColor(CellType type);	
 	Color getPathColor(CellType type);
+
+
+	sf::Color getBatteryColor(float battery) const;
+
+	void drawBatteryBar(
+		float battery,
+		sf::Vector2f position,
+		float width
+	);
+
+	void drawInfoPanel(
+		Base& base,
+		Simulation& simulation
+	);
+	void drawGameOver();
 };

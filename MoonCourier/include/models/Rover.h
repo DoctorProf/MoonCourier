@@ -18,19 +18,17 @@ public:
         int x,
         int y,
         int id,
-        bool is_active,
+        bool is_moving,
         float battery_level,
         float load
     );
 
     void setPosition(int new_x, int new_y);
-    void setActive(bool active);
     void setBatteryLevel(float level);
     void setLoad(float load);
 
     int getX() const;
     int getY() const;
-    bool getActive() const;
     float getBatteryLevel() const;
     float getLoad() const;
     void setLoadMultiplier(float multiplier);
@@ -52,12 +50,12 @@ public:
     const std::vector<int>& getPath() const;
     size_t getCurrentPathIndex() const;
 
+    bool isDead() const;
+
 private:
     int x;
     int y;
     int id;
-
-    bool is_active;
 
     float battery_level;
     float load;
@@ -74,4 +72,5 @@ private:
     PathDirection path_direction =
         PathDirection::Forward;
 
+    bool dead = false;
 };

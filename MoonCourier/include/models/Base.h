@@ -15,10 +15,15 @@ public:
 	Rover& getRover(int rover_id);
 	void addRover(const Rover& rover);
 	void removeRover(int rover_id);
-	void chargeRover(int rover_id);
+	bool chargeRover(int rover_id);
 
+	void addMoney(float amount);
 	float getMoney() const;
 	void setMoney(float newMoney);
+
+	Rover* getSelectedRover();
+	void selectNextRover();
+	void selectPreviousRover();
 
 
 private:
@@ -26,4 +31,5 @@ private:
 	int y;
 	std::vector<Rover> rovers;
 	float money;
+	int selected_rover_index = 0;
 };

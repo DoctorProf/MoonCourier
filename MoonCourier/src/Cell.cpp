@@ -31,25 +31,25 @@ float getCellTraversalTime(CellType type)
     switch (type)
     {
     case CellType::Regolith:
-        return 1.0f;
+        return 0.5f;
 
     case CellType::LooseDust:
-        return 2.0f;
+        return 1.0f;
 
     case CellType::CompactGround:
-        return 0.8f;
+        return 0.4f;
 
     case CellType::RockyGround:
-        return 3.0f;
+        return 1.5f;
 
     case CellType::Crater:
-        return 4.0f;
+        return 2.0f;
 
     case CellType::Impassable:
         return 0.0f;
     }
 
-    return 1.0f;
+    return 0.5f;
 }
 
 float getCellBatteryCost(CellType type)
@@ -57,25 +57,25 @@ float getCellBatteryCost(CellType type)
     switch (type)
     {
     case CellType::Regolith:
-        return 1.0f;
+        return 0.5f;
 
     case CellType::LooseDust:
-        return 2.0f;
+        return 1.0f;
 
     case CellType::CompactGround:
         return 0.5f;
 
     case CellType::RockyGround:
-        return 3.0f;
+        return 1.5f;
 
     case CellType::Crater:
-        return 4.0f;
+        return 2.0f;
 
     case CellType::Impassable:
         return 0.0f;
     }
 
-    return 1.0f;
+    return 0.5f;
 }
 
 Cell::Cell(int x, int y, CellType type)
