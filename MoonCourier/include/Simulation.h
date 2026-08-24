@@ -4,21 +4,15 @@
 #include "../include/models/Order.h"
 #include "../include/models/Base.h"
 #include "../include/Map.h"
-#include <nlohmann/json.hpp>
 #include "Delivery.h"
 
-using json = nlohmann::json;
 
 class Simulation
 {
 public:
-	Simulation(json config);
 	Simulation(int width_grid, int height_grid);
 
 	void update(float delta_time);
-
-	void load(json config);
-	void save();
 
 	Base& getBase();
 	Map& getMap();

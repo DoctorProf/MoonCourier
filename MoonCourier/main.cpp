@@ -1,9 +1,4 @@
-﻿#include <SFML/Graphics.hpp>
-
-#include "include/Utils.h"
-#include "include/Simulation.h"
-#include "include/PathFinder.h"
-#include "include/Renderer.h"
+﻿#include "include/Renderer.h"
 
 bool isClickedTarget(
     int pos_x,

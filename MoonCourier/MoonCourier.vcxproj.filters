@@ -76,10 +76,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="data\1.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <Font Include="..\..\..\..\Users\dimao\Downloads\Pixel Operator\PixelOperator.ttf" />
     <Font Include="assets\fonts\PixelOperator.ttf" />
+    <Font Include="assets\fonts\PixelOperator-Bold.ttf" />
   </ItemGroup>
 </Project>

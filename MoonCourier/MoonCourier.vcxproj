@@ -162,10 +162,7 @@
     <ClCompile Include="src\Simulation.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="data\1.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <Font Include="..\..\..\..\Users\dimao\Downloads\Pixel Operator\PixelOperator.ttf" />
+    <Font Include="assets\fonts\PixelOperator-Bold.ttf" />
     <Font Include="assets\fonts\PixelOperator.ttf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

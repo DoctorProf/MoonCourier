@@ -19,7 +19,7 @@ public:
 
 	void addMoney(float amount);
 	float getMoney() const;
-	void setMoney(float newMoney);
+	void setMoney(float new_money);
 
 	Rover* getSelectedRover();
 	void selectNextRover();

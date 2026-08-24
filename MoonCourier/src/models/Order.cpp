@@ -6,7 +6,8 @@ Order::Order(
     int target_y,
     float weight,
     float reward,
-    OrderUrgency urgency
+    OrderUrgency urgency,
+	OrderStatus status
 )
     : id(id),
     x(target_x),
@@ -14,7 +15,7 @@ Order::Order(
     weight(weight),
     reward(reward),
     urgency(urgency),
-    status(OrderStatus::Pending)
+    status(status)
 {
 }
 

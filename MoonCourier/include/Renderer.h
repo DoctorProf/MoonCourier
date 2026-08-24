@@ -3,7 +3,6 @@
 #include "Utils.h"
 #include "Simulation.h"
 #include <SFML/Graphics.hpp>
-#include <memory>
 
 using namespace sf;	
 

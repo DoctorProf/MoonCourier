@@ -12,10 +12,6 @@ namespace utils
 {
     constexpr float PI = 3.14159265358979323846f;
 
-    //==========================================================
-    // Работа с индексами
-    //==========================================================
-
     inline int getIndexToCoord(int x, int y, int len_line)
     {
         return y * len_line + x;
@@ -39,10 +35,6 @@ namespace utils
     {
         return index >= min && index < max;
     }
-
-    //==========================================================
-    // Парсинг чисел
-    //==========================================================
 
     template<typename T>
     bool parseNumber(const std::string& s, T& out)
@@ -95,19 +87,12 @@ namespace utils
         return value;
     }
 
-    //==========================================================
-    // Работа с контейнерами
-    //==========================================================
-
     template<typename T>
     bool in(const T& value, const std::vector<T>& vec)
     {
         return std::find(vec.begin(), vec.end(), value) != vec.end();
     }
 
-    //==========================================================
-    // Математика
-    //==========================================================
 
     template<typename T>
     T clamp(T value, T min, T max)

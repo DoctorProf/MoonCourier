@@ -24,7 +24,8 @@ public:
         int target_y,
         float weight,
         float reward,
-        OrderUrgency urgency
+        OrderUrgency urgency,
+		OrderStatus status
     );
 
     int getId() const;

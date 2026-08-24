@@ -95,14 +95,6 @@ void Simulation::update(float delta_time)
     updateDeliveries();
 }
 
-void Simulation::load(json config)
-{
-}
-
-void Simulation::save()
-{
-}
-
 Base& Simulation::getBase()
 {
     return base;
